@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <com.zwy.ttms.TitleLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.zwy.ttms.TitleLayout>
+
+    <Gallery
+        android:id="@+id/PlayManagement_gallery1"
+        android:spacing="5dp"
+        android:unselectedAlpha="0.6"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="25dp" />
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/Play_button1"
+            android:layout_toStartOf="@+id/Play_button1"
+            android:text="片名"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/Play_info1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView1"
+            android:layout_toLeftOf="@+id/Play_button1"
+            android:layout_toStartOf="@+id/Play_button1"
+            android:textSize="15dp"
+            android:text="魔兽"/>
+
+        <Button
+            android:id="@+id/Play_button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:text="修改该信息"
+            android:layout_alignParentRight="true" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/Play_info1"
+            android:layout_marginTop="20dp"
+            android:layout_toLeftOf="@+id/Play_button2"
+            android:layout_toStartOf="@+id/Play_button2"
+            android:text="时长"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/Play_info2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView2"
+            android:layout_toLeftOf="@+id/Play_button2"
+            android:layout_toStartOf="@+id/Play_button2"
+            android:textSize="15dp"
+            android:text="123分钟"/>
+
+        <Button
+            android:id="@+id/Play_button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/textView2"
+            android:text="修改该信息" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/Play_info2"
+            android:layout_marginTop="20dp"
+            android:layout_toLeftOf="@+id/Play_button3"
+            android:layout_toStartOf="@+id/Play_button3"
+            android:text="类型"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/Play_info3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView3"
+            android:layout_toLeftOf="@+id/Play_button3"
+            android:layout_toStartOf="@+id/Play_button3"
+            android:textSize="15dp"
+            android:text="动作/战争/奇幻"/>
+
+        <Button
+            android:id="@+id/Play_button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/textView3"
+            android:text="修改该信息" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/Play_info3"
+            android:layout_marginTop="20dp"
+            android:layout_toLeftOf="@+id/Play_button4"
+            android:layout_toStartOf="@+id/Play_button4"
+            android:text="上映时间"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/Play_info4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView4"
+            android:layout_toLeftOf="@+id/Play_button4"
+            android:layout_toStartOf="@+id/Play_button4"
+            android:textSize="15dp"
+            android:text="2016年上映"/>
+
+        <Button
+            android:id="@+id/Play_button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/textView4"
+            android:text="修改该信息" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/PlayManagement_button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="删除剧目" />
+
+        <Button
+            android:id="@+id/PlayManagement_button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="添加剧目" />
+
+    </LinearLayout>
+
+</LinearLayout>

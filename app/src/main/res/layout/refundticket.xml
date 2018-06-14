@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgroud3"
+    >
+<com.zwy.ttms.TitleLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+</com.zwy.ttms.TitleLayout>
+    <TextView
+        android:id="@+id/RefundTicket_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:text="请输入退票ID："
+        android:textSize="40dp"/>
+
+    <EditText
+        android:id="@+id/RefundTicket_input"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="50dp"
+        android:layout_centerVertical="true"
+        android:inputType="number"/>
+
+    <Button
+        android:id="@+id/RefundTicket_button"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignTop="@+id/RefundTicket_input"
+        android:layout_toEndOf="@+id/RefundTicket_input"
+        android:layout_toRightOf="@+id/RefundTicket_input"
+        android:text="确定" />
+
+</RelativeLayout>

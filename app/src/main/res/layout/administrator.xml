@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+    android:background="@drawable/backgroundfour">
+    <com.zwy.ttms.TitleLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.zwy.ttms.TitleLayout>
+    <TextView
+        android:id="@+id/welcome_administrator"
+        android:layout_marginTop="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="欢迎您,系统管理员 XXX！"
+        android:layout_centerHorizontal="true"
+        android:textSize="30dp"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/user_manage"
+        android:background="#00000000"
+        android:text="用户管理"
+        android:textSize="30dp"
+        android:layout_centerInParent="true"/>
+
+    <Button
+
+        android:background="#00000000"
+        android:id="@+id/studio_manage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_manage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="演出厅管理"
+        android:textSize="30dp"/>
+    <Button
+        android:id="@+id/play_manage"
+        android:background="#00000000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="剧目管理"
+        android:layout_below="@id/studio_manage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:textSize="30dp"/>
+
+</RelativeLayout>

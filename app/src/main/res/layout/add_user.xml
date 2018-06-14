@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#169ee5"
+        android:gravity="center"
+        android:text="请输入新的用户信息"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+
+    <EditText
+        android:id="@+id/user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入用户名称"
+        android:textCursorDrawable="@drawable/ic_launcher_foreground"
+        android:textSize="18sp" />
+    <EditText
+        android:id="@+id/user_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入密码"
+        android:maxLength="12"
+        android:digits="0123456789abcdefghijklmnopqrstuvwxyz"
+        android:textCursorDrawable="@drawable/ic_launcher_foreground"
+        android:textSize="18sp" />
+    <RadioGroup
+        android:id="@+id/role_choise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/radio_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="管理员"
+            />
+        <RadioButton
+            android:id="@+id/radio_m"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="经理"/>
+        <RadioButton
+            android:id="@+id/radio_c"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="售票员"
+            />
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
+
+
+        <Button
+            android:id="@+id/finish_Change"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#169ee5"
+            android:text="完成"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

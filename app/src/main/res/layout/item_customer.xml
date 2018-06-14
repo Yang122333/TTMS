@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+    tools:context=".Customer.FirendListActivity" >
+
+    <ImageView
+        android:id="@+id/iv_picture"
+        android:layout_alignParentLeft="true"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/pic1"
+
+        />
+    <com.zwy.ttms.Customer.MyTextView
+        android:id="@+id/tv_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iv_picture"
+        android:maxEms="4"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:layout_centerInParent="true" />
+
+    <com.zwy.ttms.Customer.MyTextView
+        android:id="@+id/tv_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:maxEms="8"
+        android:singleLine="true"
+        android:ellipsize="marquee" />
+</RelativeLayout>

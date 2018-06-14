@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TTMS</string>
+    <declare-styleable name="Gallery">
+        <attr name="android:galleryItemBackground"/>
+    </declare-styleable>
+
+</resources>
