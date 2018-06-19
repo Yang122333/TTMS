@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
@@ -15,12 +16,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.zwy.ttms.Administrator.AdministratorUI;
-import com.zwy.ttms.Manager.ManageScheduleActivity;
+import com.zwy.ttms.Manager.ManagerUI;
 import com.zwy.ttms.conductor.ConductorUI;
 import com.zwy.ttms.model.Service.HttpCallbackListener;
 import com.zwy.ttms.model.Service.HttpUtil;
-import com.zwy.ttms.model.users.Users;
 import com.zwy.ttms.model.users.UserAndLogParseJSON;
+import com.zwy.ttms.model.users.Users;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +34,9 @@ import org.json.JSONObject;
 
 
 public class LoginActivity extends Activity{
+
+    public static final String ip = "http://192.168.1.199:8080/";
+
     private EditText username;
     private EditText password;
     private ImageView loginbutton;
@@ -48,18 +52,19 @@ public class LoginActivity extends Activity{
         public void onClick(View view) {
             String name = username.getText().toString();
             String pass = password.getText().toString();
-            String ip = "http://192.168.1.228:8080/";
+
             String address = ip+"login?method=login&name="+name+"&pass="+pass;
             HttpUtil.sendHttpRequest(address, "POST",new HttpCallbackListener() {
                 @Override
                 public void onFinish(String response) {
+                    Log.i("Server", response);
                     String log_status = UserAndLogParseJSON.login(response);
                     login(log_status);
-
                 }
 
                 @Override
                 public void onError(Exception e) {
+
 
                 }
             });
@@ -135,7 +140,7 @@ public class LoginActivity extends Activity{
                     AdministratorUI.actionStart(LoginActivity.this);
                 } else if (log_status .equals(Users.MANAGER)) {    //经理
                     log = true;
-                    ManageScheduleActivity.actionStart(LoginActivity.this);
+                    ManagerUI.actionStart(LoginActivity.this);
                 } else if (log_status .equals(Users.CONDUCTOR)) {   //售票员
                     log = true;
                     ConductorUI.actionStart(LoginActivity.this);

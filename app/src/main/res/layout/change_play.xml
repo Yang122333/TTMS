@@ -5,47 +5,42 @@
     android:background="@android:color/transparent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#169ee5"
-        android:gravity="center"
-        android:text="修改信息"
-        android:textColor="@android:color/white"
-        android:textSize="20sp" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="用户名："/>
-    <TextView
-        android:id="@+id/user_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:editable="false"
-        android:textCursorDrawable="@drawable/ic_launcher_foreground"
-        android:textSize="18sp" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="密码："/>
     <EditText
-        android:id="@+id/user_pwd"
+        android:id="@+id/play_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:maxLength="12"
-        android:digits="0123456789abcdefghijklmnopqrstuvwxyz"
+        android:textCursorDrawable="@drawable/ic_launcher_foreground"
+        android:hint="请输入剧名："
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/play_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入剧目类型："
         android:textCursorDrawable="@drawable/ic_launcher_foreground"
         android:textSize="18sp" />
-    <TextView
+    <EditText
+        android:id="@+id/length"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="身份："/>
-    <TextView
-        android:id="@+id/user_identity"
+        android:hint="请输入剧目时长："
+        android:textCursorDrawable="@drawable/ic_launcher_foreground"
+        android:textSize="18sp" />
+    <EditText
+        android:id="@+id/play_language"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:hint="请输入剧目语言："
+        android:textCursorDrawable="@drawable/ic_launcher_foreground"
+        android:textSize="18sp" />
+    <EditText
+        android:id="@+id/play_intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textCursorDrawable="@drawable/ic_launcher_foreground"
+        android:hint="请输入剧目简介："
+        android:textSize="18sp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,9 +48,6 @@
         android:orientation="horizontal"
         android:paddingLeft="5dp"
         android:paddingRight="5dp">
-
-
-
         <Button
             android:id="@+id/finish_Change"
             android:layout_width="0dp"

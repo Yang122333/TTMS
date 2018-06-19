@@ -1,129 +1,144 @@
 package com.zwy.ttms.Administrator;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.zwy.ttms.LoginActivity;
 import com.zwy.ttms.R;
-import com.zwy.ttms.model.seat.Seat;
-import com.zwy.ttms.model.studio.Studio;
-import com.zwy.ttms.model.ticket.Ticket;
+import com.zwy.ttms.model.Seats.SeatParseJSON;
+import com.zwy.ttms.model.Seats.Seats;
+import com.zwy.ttms.model.Service.HttpCallbackListener;
+import com.zwy.ttms.model.Service.HttpUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
-
-/**
- * Created by ${Yang} on 2018/4/11.
- */
-
-public class ManageSeatActivity extends Activity {
-    RelativeLayout layout;
-
-    ImageView[] btn;
-
-    Studio studio = new Studio();
-
-    ArrayList<Seat> seatList = new ArrayList<>();
-
-    ArrayList<String> data = new ArrayList<>();
-
-    ArrayList<Ticket> tickets = new ArrayList<>();
-
+public class ManageSeatActivity extends Activity{
+    private RelativeLayout layout;
+    private ImageView[] btn ;
+    private List<Seats> seatList = new ArrayList<>();
+    private Handler handler;
+    private String studio_name;
+    private int studio_row;
+    private int studio_col;
+    private int seat_count;
     @Override
-    protected void onCreate(Bundle savedIntanceState) {
-        super.onCreate(savedIntanceState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        studio.setColumn(9);
-        studio.setRow(5);
-        init();
+        Intent intent =getIntent();
+        studio_name = intent.getStringExtra("studio_name");
+        studio_row = Integer.valueOf(intent.getStringExtra("studio_row"));
+        studio_col = Integer.valueOf(intent.getStringExtra("studio_col"));
+        seat_count = studio_row*studio_col;
+
+        init(studio_name);
+        handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what){
+                    case 1:
+                        createLayout();
+                        break;
+                }
+            }
+        };
+        btn = new ImageView[seat_count];
         setContentView(R.layout.manage_seat);
-
         TextView title = (TextView)findViewById(R.id.title_message);
+        TextView dapingmu =(TextView)findViewById(R.id.dapingmu);
 
         layout = (RelativeLayout)findViewById(R.id.seatlayout);
+        Button submit_btn = (Button)findViewById(R.id.submit_btn);
 
-
-        Button btn = (Button)findViewById(R.id.submit_btn);
-
+        submit_btn.setText("确认修改");
         title.setText("座位管理");
-
-        btn.setOnClickListener(new View.OnClickListener() {
+        dapingmu.setText(studio_name);
+        submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int flag = 0 ;
-                for(int i =0;i<studio.getSeatCount();i++){
-                    if(tickets.get(i).getStatus() == Ticket.LOCKED){
-                        tickets.get(i).setStatus(Ticket.SALED);
-                        flag++;
-                    }
-                }
-                if(flag != 0){
-                    createLayout();
-                    new AlertDialog.Builder(ManageSeatActivity.this)
-                            .setMessage("出票成功！")
-                            .setNegativeButton("确认",null)
-                            .show();
-                }
-                else{
-                    new AlertDialog.Builder(ManageSeatActivity.this)
-                            .setMessage("请选择座位！")
-                            .setNegativeButton("确认",null)
-                            .show();
+                Drawable.ConstantState t4 = getDrawable(R.drawable.seat_damaged1).getConstantState();
 
-                }
+
+                new AlertDialog.Builder(ManageSeatActivity.this)
+                        .setMessage("修改成功！")
+                        .setNegativeButton("确认",null)
+                        .show();
+
             }//#onclick
         });
 
-        createLayout();
+
 
     }
 
-    @SuppressLint("ResourceType")
-    private void createLayout() {
+    private void init(String studio_name) {
+
+        String address = LoginActivity.ip + "administrator?method=getSeatByStudioName&studioName="+studio_name;
+        HttpUtil.sendHttpRequest(address, "GET", new HttpCallbackListener() {
+            @Override
+            public void onFinish(String response) {
+                Log.i("ManageSeatActivity", "response:   "+response);
+                seatList = SeatParseJSON.toSeatList(response);
+                Log.i("ManageSeatActivity", "status:      "+seatList.get(0).getStatus());
+                Message message = new Message();
+                message.what = 1;
+                handler.sendMessage(message);
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });
+
+    }
+
+
+    private void createLayout( ) {
         //获取屏幕大小,以合理设定 按钮 大小及位置
         DisplayMetrics dm=new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
         int height = dm.heightPixels;
-        btn = new ImageView[studio.getSeatCount()];
+
         int  j = -1;
 
-        for (int i =0 ;i<studio.getSeatCount() ; i++){
+        for (int i =0 ;i<seat_count; i++){
 
             btn[i] = new ImageView(this);
-            if(seatList.get(i).getStatus()== Seat.NORMAL) {//  设置座位图片
-                if (tickets.get(i).getStatus() == Ticket.ONSALED) {
-                    btn[i].setImageResource(R.drawable.seat_unchecked);
-                }
-//            else if(tickets.get(i).getState()==Ticket.LOCKED){
-//                btn[i].setImageResource(R.drawable.seat_locked);
-//            }
-                else if (tickets.get(i).getStatus() == Ticket.SALED) {
-                    btn[i].setImageResource(R.drawable.seat_checked1);
-                }
-            }
-            else{
-                btn[i].setImageResource(R.drawable.seat_damaged1);
-            }
+
+            btn[i].setImageResource(R.drawable.seat_unchecked);
+
             btn[i].setScaleType(ImageView.ScaleType.FIT_XY);
             btn[i].setTag(i);
             //设置图片的宽度和高度
             RelativeLayout.LayoutParams btnParams = new RelativeLayout.LayoutParams(
-                    width/studio.getColumn()-50,width/studio.getColumn()-50 );
-            if(i%studio.getColumn() == 0){
+                    width/studio_col-50,width/studio_col-50 );
+            if(i%studio_col == 0){
                 j++;
             }
-            btnParams.leftMargin = 10+((width-50)/studio.getColumn()+10)*(i%studio.getColumn());//横坐标定位
-            btnParams.topMargin = ((width-50)/studio.getColumn()+10)*j;
+            btnParams.leftMargin = 10+((width-50)/studio_col+10)*(i%studio_col);//横坐标定位
+            btnParams.topMargin = ((width-50)/studio_col+10)*j;
             layout.addView(btn[i],btnParams);
+            if(seatList.get(i).getStatus().equals("DAMAGE")){
+                btn[i].setImageResource(R.drawable.seat_damaged1);
+
+            }
         }//#for
         //设置监听
         for(int k = 0;k<btn.length;k++){
@@ -133,64 +148,55 @@ public class ManageSeatActivity extends Activity {
                 public void onClick(View view) {
                     int i = (Integer) view.getTag();
 
-                    int current_position = i + 1;
                     ImageView v = (ImageView) view;//更换图片
                     Drawable.ConstantState t1 = v.getDrawable().getConstantState();
                     Drawable.ConstantState t2 = getDrawable(R.drawable.seat_locked).getConstantState();
                     Drawable.ConstantState t3 = getDrawable(R.drawable.seat_checked1).getConstantState();
                     Drawable.ConstantState t4 = getDrawable(R.drawable.seat_damaged1).getConstantState();
 
-                    if (!t1.equals(t3) && !t1.equals(t4)) {
-                        int seatX;
-                        int seatY;
-                        if (current_position % studio.getColumn() == 0) {
-                            seatX = current_position / studio.getColumn();
-                            seatY = studio.getColumn();
-                        } else {
-                            seatX = current_position / studio.getColumn() + 1;
-                            seatY = current_position % studio.getColumn();
-                        }
-                        String info = "第" + seatX + "行" + seatY + "列";
-                        if (t1.equals(t2)) {
-                            v.setImageResource(R.drawable.seat_unchecked);
-                            for (int q = 0; q < data.size(); q++) {
-                                if (info.equals(data.get(q))) {
-                                    data.remove(q);
-                                    tickets.get(i).setStatus(Ticket.ONSALED);
-                                }
+
+                    if (t1.equals(t4)) {
+                        v.setImageResource(R.drawable.seat_unchecked);
+                        String address = LoginActivity.ip+"administrator?method=updateSeat&unionId="
+                                +seatList.get(i).getUnionId()
+                                +"&status=USE";
+                        HttpUtil.sendHttpRequest(address, "POST", new HttpCallbackListener() {
+                            @Override
+                            public void onFinish(String response) {
+                                Log.i("ManageSeatActivity", "response:   "+response);
 
                             }
-                        } else {
-                            v.setImageResource(R.drawable.seat_locked);
 
-                            tickets.get(i).setStatus(Ticket.LOCKED);
+                            @Override
+                            public void onError(Exception e) {
 
-                        }
+                            }
+                        });
+
+                    } else {
+                        v.setImageResource(R.drawable.seat_damaged1);
+                        String address = LoginActivity.ip+"administrator?method=updateSeat&unionId="
+                                +seatList.get(i).getUnionId()
+                                +"&status=DAMAGE";
+                        HttpUtil.sendHttpRequest(address, "POST", new HttpCallbackListener() {
+                            @Override
+                            public void onFinish(String response) {
+                                Log.i("ManageSeatActivity", "response:   "+response);
+
+
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+
+                            }
+                        });
 
                     }
+
                 }
             });
 
         }
     }
-    private void init(){
-        for(int i=0; i<studio.getSeatCount();i++){
-            Seat seat =new Seat();
-            Ticket ticket = new Ticket();
-            ticket.setSeatId(seat.getId());
-            if(i%10==0){
-                seat.setStatus(Seat.DAMAGED);
-            }
-            if(i%7== 0){
-                ticket.setStatus(Ticket.SALED);
-            }
-//            if(i%9 ==0){
-//                ticket.setState(Ticket.LOCKED);
-//            }
-            seatList.add(seat);
-            tickets.add(ticket);
-        }
-    }
-
 }
-

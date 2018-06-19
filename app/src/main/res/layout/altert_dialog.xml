@@ -28,6 +28,13 @@
             android:inputType="number"
             />
     </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="  介       绍        ："/>
+            <EditText
+                android:id="@+id/studio_introduce"/>
+        </TableRow>
     <!--<TableRow>-->
         <!--<TextView-->
             <!--android:text="  状        态        ："/>-->

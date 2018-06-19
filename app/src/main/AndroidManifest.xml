@@ -9,6 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Manager.ManagePlay"/>
+        <activity android:name=".Manager.ManagerUI"/>
         <activity android:name=".Administrator.ManageSeatActivity"/>
         <activity android:name=".Customer.FirendListActivity"/>
         <activity android:name=".conductor.SaleTicket"/>

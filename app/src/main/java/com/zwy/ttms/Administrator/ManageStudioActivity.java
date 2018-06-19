@@ -6,19 +6,25 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zwy.ttms.LoginActivity;
 import com.zwy.ttms.R;
-import com.zwy.ttms.model.studio.Studio;
+import com.zwy.ttms.model.Service.HttpCallbackListener;
+import com.zwy.ttms.model.Service.HttpUtil;
+import com.zwy.ttms.model.Studios.StudioParseJSON;
+import com.zwy.ttms.model.Studios.Studios;
+import com.zwy.ttms.model.users.UserAndLogParseJSON;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +34,14 @@ import java.util.List;
  */
 
 public class ManageStudioActivity extends Activity implements View.OnClickListener{
-
-    private RelativeLayout layout;
+    private Handler handler;
+    private Handler handler1;
+    private static final int ADD_SUCCEED = 1;
+    private static final int QUERY_SUCCEED = 0;
     private  ListView listView;
-    private List<Studio> studioList = new ArrayList<>();
-    private List<String> studioNames =new ArrayList<>();
-
-    ArrayAdapter adapter;
+    private List<Studios> studioList = new ArrayList<>();
+    private StudioAdapter adapter;
+    private String add_status;
 
     public static void actionStart(Context context){
         Intent intent = new Intent(context,ManageStudioActivity.class);
@@ -51,18 +58,34 @@ public class ManageStudioActivity extends Activity implements View.OnClickListen
         listView =(ListView)findViewById(R.id.studio_list);
         final Button  btn = (Button)findViewById(R.id.add_studio);
 
-
         init();
 
-        adapter = new ArrayAdapter
-                (this,android.R.layout.simple_list_item_1,studioNames);
-        listView.setAdapter(adapter);
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case ADD_SUCCEED:
+                        Log.i("server123", "handleMessage: 213            ");
+                        break;
+                    case QUERY_SUCCEED:
+                        Log.i("server123", "handleMessage: 21435245435");
+                        adapter = new StudioAdapter(ManageStudioActivity.this,R.layout.studio_item,studioList);
+                        listView.setAdapter(adapter);
+                }
+                super.handleMessage(msg);
+
+            }
+        };
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position , long id) {
 
                 Intent intent = new Intent( ManageStudioActivity.this,ManageSeatActivity.class);
-//                intent.putExtra(StudioData.STUDIO_ID,String.valueOf(studioList.get(position).getId()));
+                intent.putExtra("studio_name",studioList.get(position).getName());
+                intent.putExtra("studio_row",studioList.get(position).getRow());
+                intent.putExtra("studio_col",studioList.get(position).getCol());
                 startActivity(intent);
             }
         });
@@ -74,12 +97,37 @@ public class ManageStudioActivity extends Activity implements View.OnClickListen
                 AlertDialog.Builder builder =new AlertDialog.Builder(ManageStudioActivity.this);
                 builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int q) {
-                        studioNames.remove(i);
+                    public void onClick(DialogInterface dialogInterface, int q){
+
+
+                        String name =studioList.get(i).getName();
+                        Log.i("intnet", name);
+                        String ip = LoginActivity.ip;
+                        String address = ip+"administrator?method=deleterStudioByName&name=" + name;
+                        Log.i("server", address);
+
+                        HttpUtil.sendHttpRequest(address , "POST",new HttpCallbackListener() {
+                            @Override
+                            public void onFinish(String response) {
+                                Log.i("intnet", response);
+                                add_status = UserAndLogParseJSON.login(response);
+                                Log.i("intnet", add_status);
+//                                Message message = new Message();
+//                                message.what = ADD_SUCCEED;
+//// 将服务器返回的结果存放到Message中
+//                                handler2.sendMessage(message);
+                            };
+                            @Override
+                            public void onError(Exception e) {
+
+                            }
+                        });
+
+
 
                         studioList.remove(i);
                         adapter.notifyDataSetChanged();
-                        listView.setSelection(studioNames.size());
+                        listView.setSelection(studioList.size());
                     }
                 })
                         .setNegativeButton("修改", new DialogInterface.OnClickListener() {
@@ -97,29 +145,27 @@ public class ManageStudioActivity extends Activity implements View.OnClickListen
     }
 
     private void init() {
+        String ip = LoginActivity.ip;
+        String address = ip+"administrator?method=getStudioList";
 
-        if(studioList == null){
-            studioList = new ArrayList<>();
-            Studio studio =new Studio();
-            studio.setName("1号演出厅");
-            studio.setSeatInfo(1+" "+3+" "+4);
-
-
-            studioList.add(studio);
-            studioNames.add(studio.getName());
-
-            studio.setName("2号演出厅");
-            studio.setSeatInfo(2+" "+3+" "+5);
+        HttpUtil.sendHttpRequest(address, "GET", new HttpCallbackListener() {
+            @Override
+            public void onFinish(String response) {
 
 
+                studioList = StudioParseJSON.toStudiolist(response);
+                Log.i("studiolist", studioList.get(0).getName()+" "+studioList.get(0).getIntroduce());
+                Message message = new Message();
+                message.what = QUERY_SUCCEED;
+                handler.sendMessage(message);
 
-            studioList.add(studio);
-            studioNames.add(studio.getName());
-        }
-        else
-        for(Studio s: studioList){
-            studioNames.add(s.getName());
-        }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });
     }
 
 
@@ -129,7 +175,6 @@ public class ManageStudioActivity extends Activity implements View.OnClickListen
             case R.id.add_studio:
                 addInfo();
                 break;
-
             default:
                 break;
         }
@@ -137,16 +182,16 @@ public class ManageStudioActivity extends Activity implements View.OnClickListen
     private void addInfo(){
         View view1 = View.inflate(this,R.layout.altert_dialog,null);
 
-         AlertDialog.Builder builder =new AlertDialog.Builder(this);
+         final AlertDialog.Builder builder =new AlertDialog.Builder(this);
 
          builder.setTitle("演出厅信息")
                 .setView(view1)
                 .setCancelable(false);
-
         final AlertDialog alertDialog =builder.create();
         final EditText name = (EditText)view1.findViewById(R.id.studio_name);
         final EditText row = (EditText)view1.findViewById(R.id.studio_row);
         final EditText column = (EditText)view1.findViewById(R.id.studio_column);
+        final EditText introduce = (EditText)view1.findViewById(R.id.studio_introduce);
         Button cancel = (Button)view1.findViewById(R.id.studio_cancel);
         Button confirm = (Button)view1.findViewById(R.id.studio_confirm);
 
@@ -159,22 +204,71 @@ public class ManageStudioActivity extends Activity implements View.OnClickListen
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    Studio studio =new Studio();
+
+
+                handler1 = new Handler(){
+                    @Override
+                    public void handleMessage(Message msg) {
+                        switch (msg.what){
+                            case ADD_SUCCEED:
+                                Log.i("handler1", "handleMessage: ");
+                                if(add_status.equals("succeed")){
+                                    Log.i("succeed", add_status);
+
+                                    Studios studio =new Studios();
+                                    studio.setName(name.getText().toString());
+                                    studio.setRow(row.getText().toString());
+                                    studio.setCol(column.getText().toString());
+
+                                    studioList.add(studio);
+
+                                    adapter.notifyDataSetChanged();
+                                    listView.setSelection(studioList.size());
+                                    alertDialog.dismiss();                                            //error
+
+                                }
+                                else{
+                                    Toast.makeText(ManageStudioActivity.this, "已存在该演出厅", Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+                        }
+
+                        super.handleMessage(msg);
+                    }
+                };
+
+
                     if(!"".equals(name.getText().toString() ) &&
                             name.getText().toString().indexOf(" ") == -1 &&
                             !"".equals(row.getText().toString()) &&
                             !"".equals(column.getText().toString())  )
                     {
-                        studio.setName(name.getText().toString());
-                        studio.setRow(Integer.valueOf(row.getText().toString()));
-                        studio.setColumn(Integer.valueOf(column.getText().toString()));
 
-                        studioList.add(studio);
-                        studioNames.add(studio.getName());
 
-                        adapter.notifyDataSetChanged();
-                        listView.setSelection(studioNames.size());
-                        alertDialog.dismiss();
+                        String ip = LoginActivity.ip;
+                        String address = ip+"administrator?method=addStudio&name="
+                                +name.getText().toString()
+                                +"&row="+row.getText().toString()
+                                +"&col="+column.getText().toString()
+                                +"&introduce="+introduce.getText().toString();
+                        Log.i("server", address);
+
+                        HttpUtil.sendHttpRequest(address , "POST",new HttpCallbackListener() {
+                            @Override
+                            public void onFinish(String response) {
+                                Log.i("intnet", response);
+                                 add_status = UserAndLogParseJSON.login(response);
+                                Log.i("intnet", add_status);
+                                Message message = new Message();
+                                message.what = ADD_SUCCEED;
+// 将服务器返回的结果存放到Message中
+                                handler1.sendMessage(message);
+                            };
+                            @Override
+                            public void onError(Exception e) {
+
+                            }
+                        });
 
                     }
                     else{
@@ -198,12 +292,13 @@ public class ManageStudioActivity extends Activity implements View.OnClickListen
         final EditText name = (EditText)view1.findViewById(R.id.studio_name);
         final EditText row = (EditText)view1.findViewById(R.id.studio_row);
         final EditText column = (EditText)view1.findViewById(R.id.studio_column);
+        final EditText introduce = (EditText)view1.findViewById(R.id.list_introduce);
 
-        Studio s = studioList.get(flag);
+        Studios s = studioList.get(flag);
 
         name.setText(s.getName());
         row.setText(String.valueOf(s.getRow()));
-        column.setText(String.valueOf(s.getColumn()));
+        column.setText(String.valueOf(s.getCol()));
 
         Button cancel = (Button)view1.findViewById(R.id.studio_cancel);
         Button confirm = (Button)view1.findViewById(R.id.studio_confirm);
@@ -222,16 +317,15 @@ public class ManageStudioActivity extends Activity implements View.OnClickListen
 
 
                         studioList.get(flag).setName(name.getText().toString());
-                        studioList.get(flag).setRow(Integer.valueOf(row.getText().toString()));
-                        studioList.get(flag).setColumn(Integer.valueOf(column.getText().toString()));
-
-                        studioNames.set(flag,name.getText().toString());
+                        studioList.get(flag).setRow(row.getText().toString());
+                        studioList.get(flag).setCol(column.getText().toString());
+                        studioList.get(flag).setIntroduce(introduce.getText().toString());
 
                     }
 
                     adapter.notifyDataSetChanged();
 
-                    listView.setSelection(studioNames.size());
+                    listView.setSelection(studioList.size());
 
                     alertDialog.dismiss();
             }
@@ -239,4 +333,6 @@ public class ManageStudioActivity extends Activity implements View.OnClickListen
         alertDialog.show();
 
     }
+
+
 }

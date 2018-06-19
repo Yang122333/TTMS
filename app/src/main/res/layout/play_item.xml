@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/play_picture"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:elevation="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_play"
+        android:contentDescription="@string/item_home_child_image_description" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/play_name"
+            style="@style/video_detail_main_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="31dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                style="@style/video_detail_info_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="时长"/>
+            <TextView
+                android:id="@+id/play_length"
+                style="@style/video_detail_info_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="120"/>
+
+            <TextView
+                style="@style/video_detail_info_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="类型"/>
+            <TextView
+                android:id="@+id/play_type"
+                style="@style/video_detail_info_text_grade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:text="恐怖"/>
+
+            <TextView
+                style="@style/video_detail_info_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="语言"/>
+            <TextView
+                android:id="@+id/play_language"
+                style="@style/video_detail_info_text_grade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:text="国语"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/play_intro"
+            style="@style/video_detail_secondary_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="1.4"
+            android:maxLines="5"
+            android:textSize="12sp"
+            android:text="111111"/>
+    </LinearLayout>
+</LinearLayout>

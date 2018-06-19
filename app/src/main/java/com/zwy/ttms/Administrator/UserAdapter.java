@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.zwy.ttms.R;
-import com.zwy.ttms.model.user.User;
+import com.zwy.ttms.model.users.Users;
 
 import java.util.List;
 
@@ -19,10 +19,10 @@ import java.util.List;
 
 public class UserAdapter extends BaseAdapter {
 
-    private List<User> list;
+    private List<Users> list;
     private LayoutInflater inflater;
 
-    public UserAdapter(Context context, List<User> list){
+    public UserAdapter(Context context, List<Users> list){
         this.list = list;
         inflater = LayoutInflater.from(context);
     }
@@ -49,7 +49,7 @@ public class UserAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        User users = (User) this.getItem(position);
+        Users users = (Users) this.getItem(position);
 
         ViewHolder viewHolder;
 
@@ -68,9 +68,9 @@ public class UserAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.ID.setText(String.valueOf(users.getUserId()));
+        viewHolder.ID.setText(String.valueOf(users.getUnionId()));
         viewHolder.ID.setTextSize(13);
-        viewHolder.UserName.setText(users.getLogin_name());
+        viewHolder.UserName.setText(users.getName());
         viewHolder.UserName.setTextSize(13);
         viewHolder.pwd.setText("********");
         viewHolder.pwd.setTextSize(13);

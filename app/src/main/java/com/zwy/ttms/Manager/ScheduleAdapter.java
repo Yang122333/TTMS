@@ -13,7 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.zwy.ttms.R;
-import com.zwy.ttms.model.Plays;
+import com.zwy.ttms.model.schedule.Plays;
 
 import java.util.List;
 

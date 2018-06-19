@@ -3,5 +3,5 @@
     <declare-styleable name="Gallery">
         <attr name="android:galleryItemBackground"/>
     </declare-styleable>
-
+    <string name="item_home_child_image_description">图片描述</string>
 </resources>

@@ -10,14 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.zwy.ttms.R;
-import com.zwy.ttms.model.ticket.TicketDao;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChosePlayActivity extends Activity{
     private List<String> scheduleList = new ArrayList<>();
-    private TicketDao ticketDao;
+
     //private List<Schedule> scheduleList = new ArrayList<>();
     //private ScheduleDao scheduleDao;
 //    private Schedule schedule ;
@@ -71,6 +70,5 @@ public class ChosePlayActivity extends Activity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ticketDao.dbClose();
     }
 }

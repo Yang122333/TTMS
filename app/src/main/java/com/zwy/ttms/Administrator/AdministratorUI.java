@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.zwy.ttms.Customer.FirendListActivity;
 import com.zwy.ttms.R;
 import com.zwy.ttms.model.DataHelper;
 
@@ -31,7 +30,7 @@ public class AdministratorUI extends Activity implements View.OnClickListener{
         setContentView(R.layout.administrator);
         Button btn1 = (Button)findViewById(R.id.user_manage);
         Button btn2 = (Button)findViewById(R.id.studio_manage);
-        Button btn3 = (Button)findViewById(R.id.play_manage);
+//        Button btn3 = (Button)findViewById(R.id.play_manage);
         TextView textView = (TextView)findViewById(R.id.title_message);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +42,7 @@ public class AdministratorUI extends Activity implements View.OnClickListener{
         textView.setText("系统管理员");
         btn1.setOnClickListener(this);
         btn2.setOnClickListener(this);
-        btn3.setOnClickListener(this);
+//        btn3.setOnClickListener(this);
 
     }
 
@@ -52,14 +51,14 @@ public class AdministratorUI extends Activity implements View.OnClickListener{
         switch (view.getId())
         {
             case R.id.user_manage:
-                FirendListActivity.actionStart(this);
+                ManageUserActivity.actionStart(this);
                 break;
             case R.id.studio_manage:
                 ManageStudioActivity.actionStart(this);
                 break;
-            case R.id.play_manage:
-                PlayManagement.actionStart(this);
-                break;
+//            case R.id.play_manage:
+//                PlayManagement.actionStart(this);
+//                break;
             default:
                 break;
         }
