@@ -35,13 +35,15 @@ import org.json.JSONObject;
 
 public class LoginActivity extends Activity{
 
-    public static final String ip = "http://192.168.1.199:8080/";
-
+    public static final String ip = "http://192.168.1.228:8080/";
+    private LoadingDialog loadingDialog = new LoadingDialog(this);
     private EditText username;
     private EditText password;
     private ImageView loginbutton;
 
-    public static final int SHOW_RESPONSE = 0;
+    public static final int LOGIN_FAILED = 0;
+    public static final int LOGIN_SUCCESS = 1;
+
     private Handler handler;
 
 
@@ -50,6 +52,7 @@ public class LoginActivity extends Activity{
     private View.OnClickListener mylistener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            loadingDialog.showDialog();
             String name = username.getText().toString();
             String pass = password.getText().toString();
 
@@ -59,7 +62,9 @@ public class LoginActivity extends Activity{
                 public void onFinish(String response) {
                     Log.i("Server", response);
                     String log_status = UserAndLogParseJSON.login(response);
-                    login(log_status);
+                    Message message = new Message();
+                    message.obj = log_status;
+                    handler.sendMessage(message);
                 }
 
                 @Override
@@ -86,6 +91,7 @@ public class LoginActivity extends Activity{
         password = (EditText)findViewById(R .id.password);
         loginbutton = (ImageView)findViewById(R.id.loginbutton);
 
+
         pref = PreferenceManager.getDefaultSharedPreferences(this);
 
         boolean isRemember = pref.getBoolean("remember_password", false);
@@ -101,13 +107,8 @@ public class LoginActivity extends Activity{
         loginbutton.setOnClickListener(mylistener);
          handler = new Handler() {
             public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case SHOW_RESPONSE:
-                        new AlertDialog.Builder(LoginActivity.this)
-                                .setMessage("登录失败！")
-                                .setPositiveButton("确定", null)
-                                .show();
-                }
+                loadingDialog.dismissDialog();
+                login((String) msg.obj);
                 }
             };
     }
@@ -116,11 +117,10 @@ public class LoginActivity extends Activity{
             boolean log = false ;
 
             if(log_status.equals("fail")){
-
-                Message message = new Message();
-                message.what = SHOW_RESPONSE;
-// 将服务器返回的结果存放到Message中
-                handler.sendMessage(message);
+                new AlertDialog.Builder(LoginActivity.this)
+                        .setMessage("登录失败！")
+                        .setPositiveButton("确定", null)
+                        .show();
             }
             else{
 

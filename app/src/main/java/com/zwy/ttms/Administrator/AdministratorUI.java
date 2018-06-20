@@ -56,9 +56,6 @@ public class AdministratorUI extends Activity implements View.OnClickListener{
             case R.id.studio_manage:
                 ManageStudioActivity.actionStart(this);
                 break;
-//            case R.id.play_manage:
-//                PlayManagement.actionStart(this);
-//                break;
             default:
                 break;
         }

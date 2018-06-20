@@ -116,7 +116,7 @@ public class ManageStudioActivity extends Activity implements View.OnClickListen
 //                                message.what = ADD_SUCCEED;
 //// 将服务器返回的结果存放到Message中
 //                                handler2.sendMessage(message);
-                            };
+                            }
                             @Override
                             public void onError(Exception e) {
 
@@ -151,7 +151,6 @@ public class ManageStudioActivity extends Activity implements View.OnClickListen
         HttpUtil.sendHttpRequest(address, "GET", new HttpCallbackListener() {
             @Override
             public void onFinish(String response) {
-
 
                 studioList = StudioParseJSON.toStudiolist(response);
                 Log.i("studiolist", studioList.get(0).getName()+" "+studioList.get(0).getIntroduce());
@@ -204,7 +203,6 @@ public class ManageStudioActivity extends Activity implements View.OnClickListen
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
                 handler1 = new Handler(){
                     @Override
@@ -263,7 +261,7 @@ public class ManageStudioActivity extends Activity implements View.OnClickListen
                                 message.what = ADD_SUCCEED;
 // 将服务器返回的结果存放到Message中
                                 handler1.sendMessage(message);
-                            };
+                            }
                             @Override
                             public void onError(Exception e) {
 

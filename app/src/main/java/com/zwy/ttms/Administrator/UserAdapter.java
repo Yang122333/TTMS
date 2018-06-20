@@ -58,7 +58,7 @@ public class UserAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
 
             convertView = inflater.inflate(R.layout.user_item, null);
-            viewHolder.ID= (TextView) convertView.findViewById(R.id.user_id);
+//            viewHolder.ID= (TextView) convertView.findViewById(R.id.user_id);
             viewHolder.UserName = (TextView) convertView.findViewById(R.id.user_name);
             viewHolder.pwd = (TextView) convertView.findViewById(R.id.user_pwd);
             viewHolder.Identity = (TextView) convertView.findViewById(R.id.user_itentity);
@@ -68,8 +68,8 @@ public class UserAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.ID.setText(String.valueOf(users.getUnionId()));
-        viewHolder.ID.setTextSize(13);
+//        viewHolder.ID.setText(String.valueOf(users.getUnionId()));
+//        viewHolder.ID.setTextSize(13);
         viewHolder.UserName.setText(users.getName());
         viewHolder.UserName.setTextSize(13);
         viewHolder.pwd.setText("********");
